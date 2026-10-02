@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Preview - ComicCraft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Comic Neue', cursive, sans-serif;
+            background: #fffbeb;
+            color: #111827;
+            padding: 30px 16px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header-bar {
+            background: #ffffff;
+            border: 4px solid #111827;
+            box-shadow: 6px 6px 0px #111827;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 42px;
+            color: #dc2626;
+            letter-spacing: 2px;
+        }
+        .meta-tags {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .badge {
+            background: #fef08a;
+            border: 2px solid #111827;
+            padding: 4px 12px;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 20px;
+        }
+        .panel-card {
+            background: #ffffff;
+            border: 4px solid #111827;
+            box-shadow: 8px 8px 0px #111827;
+            border-radius: 12px;
+            margin-bottom: 36px;
+            overflow: hidden;
+        }
+        .panel-header {
+            background: #facc15;
+            padding: 12px 20px;
+            border-bottom: 3px solid #111827;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .panel-title {
+            font-family: 'Bangers', cursive;
+            font-size: 24px;
+            color: #000;
+            letter-spacing: 1px;
+        }
+        .panel-image-wrapper {
+            background: #111827;
+            text-align: center;
+            border-bottom: 3px solid #111827;
+            position: relative;
+        }
+        .panel-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 480px;
+            display: block;
+            margin: 0 auto;
+        }
+        .sound-burst {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: #ffffff;
+            font-family: 'Bangers', cursive;
+            font-size: 22px;
+            padding: 6px 14px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            transform: rotate(8deg);
+        }
+        .panel-content {
+            padding: 24px;
+        }
+        .scene-desc {
+            font-style: italic;
+            color: #374151;
+            font-size: 16px;
+            margin-bottom: 16px;
+            padding-left: 12px;
+            border-left: 4px solid #f59e0b;
+        }
+        .balloon-box {
+            background: #fefce8;
+            border: 2px solid #111827;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .dialogue-text {
+            font-weight: 700;
+            font-size: 16px;
+            color: #1e1b4b;
+        }
+        .caption-text {
+            color: #4b5563;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .prompt-reference {
+            margin-top: 14px;
+            background: #f3f4f6;
+            border: 1px dashed #9ca3af;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .actions-footer {
+            text-align: center;
+            margin: 40px 0;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            font-family: 'Bangers', cursive;
+            font-size: 22px;
+            padding: 14px 28px;
+            border: 4px solid #111827;
+            box-shadow: 4px 4px 0px #111827;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.15s ease;
+        }
+        .btn-download {
+            background: #10b981;
+            color: #ffffff;
+        }
+        .btn-download:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #111827;
+            background: #059669;
+        }
+        .btn-back {
+            background: #e5e7eb;
+            color: #111827;
+        }
+        .btn-back:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #111827;
+            background: #d1d5db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-bar">
+            <h1>📖 {{ character_name }}'s Comic Story</h1>
+            <div class="meta-tags">
+                <span class="badge">🌲 Setting: {{ setting }}</span>
+                <span class="badge">🎭 Tone: {{ story_tone }}</span>
+                <span class="badge">🎨 Style: {{ art_style }}</span>
+            </div>
+        </div>
+
+        {% for panel in layout %}
+        <div class="panel-card">
+            <div class="panel-header">
+                <span class="panel-title">{{ panel.title }}</span>
+                <span class="badge">Panel {{ panel.panel_number }} of {{ layout|length }}</span>
+            </div>
+
+            <div class="panel-image-wrapper">
+                <img src="{{ panel.image_path }}" alt="{{ panel.title }}" class="panel-image" onerror="this.src='/static/panels/default.png'">
+                {% if panel.sound_effect %}
+                <div class="sound-burst">{{ panel.sound_effect }}</div>
+                {% endif %}
+            </div>
+
+            <div class="panel-content">
+                <p class="scene-desc"><em>Scene: {{ panel.scene_description }}</em></p>
+
+                {% if panel.dialogue %}
+                <div class="balloon-box">
+                    <p class="dialogue-text">💬 {{ panel.dialogue }}</p>
+                    {% if panel.caption %}
+                    <p class="caption-text">📜 {{ panel.caption }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="prompt-reference">
+                    <strong>Artistic Prompt:</strong> {{ panel.image_prompt }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="actions-footer">
+            <a href="/export-success?pdf_path={{ pdf_path }}" class="btn btn-download">
+                📥 DOWNLOAD YOUR COMIC AS PDF
+            </a>
+            <a href="/" class="btn btn-back">
+                🔄 CREATE ANOTHER COMIC
+            </a>
+        </div>
+    </div>
+</body>
+</html>
